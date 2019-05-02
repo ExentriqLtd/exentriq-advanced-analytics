@@ -15,7 +15,7 @@
 # specific language governing permissions and limitations
 # under the License.
 # pylint: disable=R
-from flask import request
+from flask import request, jsonify, g
 from flask_appbuilder import expose
 from flask_appbuilder.security.decorators import has_access_api
 import simplejson as json
@@ -27,6 +27,19 @@ import superset.models.core as models
 from superset.models.core import Log
 from superset.utils import core as utils
 from .base import api, BaseSupersetView, handle_api_exception
+
+from flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token,
+    get_jwt_identity
+)
+
+from flask_appbuilder.models.sqla.interface import SQLAInterface
+import logging
+import requests
+from superset.exentriq import exentriqLoginByToken
+
+#from flask_appbuilder.api import ModelRestApi
+#from flask_appbuilder.models.sqla.interface import SQLAInterface
 
 
 class Api(BaseSupersetView):
@@ -71,5 +84,42 @@ class Api(BaseSupersetView):
 
         return json.dumps(form_data)
 
+    @expose('/v1/custom/login', methods=['POST'])
+    def login(self):
+        if not request.is_json:
+            return jsonify({"msg": "Missing JSON in request"}), 400
+        token = request.json.get('token', None)
+        sso_url = appbuilder.app.config['EXENRIQ_SSO_URL']
+        result = exentriqLoginByToken(token, security_manager, sso_url);
+        return jsonify(result);
+
+    @expose('/v1/custom/dashboards', methods=['GET'])
+    @jwt_required
+    def protected2(self):
+        # Access the identity of the current user with get_jwt_identity
+        current_user = get_jwt_identity()
+        logging.debug(current_user)
+
+        # Get user by username
+        user = security_manager.find_user(username=current_user)
+        print(vars(user))
+
+        # Check all_datasource_access access
+        has_all_datasource_access = security_manager._has_view_access(user, 'all_datasource_access', 'all_datasource_access')
+        logging.debug(has_all_datasource_access)
+
+        Dash = models.Dashboard  # noqa
+        User = security_manager.user_model
+
+        if has_all_datasource_access == True:
+            query = db.session.query(Dash)
+        else:
+            query = db.session.query(Dash).join(Dash.owners).filter(User.username == current_user)
+
+        dashboards = []
+        db_dashboards = query.all()
+        for db_dashboard in db_dashboards:
+            dashboards.append({'title':db_dashboard.dashboard_title, 'url':db_dashboard.url})
+        return jsonify(dashboards)
 
 appbuilder.add_view_no_menu(Api)

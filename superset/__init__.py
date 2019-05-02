@@ -35,6 +35,8 @@ from superset import config
 from superset.connectors.connector_registry import ConnectorRegistry
 from superset.security import SupersetSecurityManager
 from superset.utils.core import pessimistic_connection_handling, setup_cache
+from flask_jwt_extended import JWTManager
+
 
 wtforms_json.init()
 
@@ -47,6 +49,10 @@ if not os.path.exists(config.DATA_DIR):
 app = Flask(__name__)
 app.config.from_object(CONFIG_MODULE)
 conf = app.config
+
+# Setup the Flask-JWT-Extended extension
+app.config['JWT_SECRET_KEY'] = 'super-secret'  # Change this!
+jwt = JWTManager(app)
 
 #################################################################
 # Handling manifest file logic at app start

@@ -96,7 +96,7 @@ QUERY_SEARCH_LIMIT = 1000
 WTF_CSRF_ENABLED = True
 
 # Add endpoints that need to be exempt from CSRF protection
-WTF_CSRF_EXEMPT_LIST = ['superset.views.core.log']
+WTF_CSRF_EXEMPT_LIST = ['superset.views.core.log', 'superset.views.api.login']
 
 # Whether to run the web server in debug mode or not
 DEBUG = os.environ.get('FLASK_ENV') == 'development'
@@ -608,6 +608,7 @@ DEFAULT_RELATIVE_END_TIME = 'today'
 # localtime (in the tz where the superset webserver is running)
 IS_EPOCH_S_TRULY_UTC = False
 
+EXENRIQ_SSO_URL = 'http://stage.exentriq.com/JSON-RPC'
 
 try:
     if CONFIG_PATH_ENV_VAR in os.environ:

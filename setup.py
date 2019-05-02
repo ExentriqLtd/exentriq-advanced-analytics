@@ -105,6 +105,8 @@ setup(
         'sqlparse',
         'unicodecsv',
         'wtforms-json',
+        'flask-jwt-extended',
+        'mysqlclient'
     ],
     extras_require={
         'cors': ['flask-cors>=2.0.0'],
