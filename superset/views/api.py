@@ -30,7 +30,7 @@ from .base import api, BaseSupersetView, handle_api_exception
 
 from flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
-    get_jwt_identity
+    get_jwt_identity, get_current_user
 )
 
 from flask_appbuilder.models.sqla.interface import SQLAInterface
@@ -97,12 +97,14 @@ class Api(BaseSupersetView):
     @jwt_required
     def dashboards(self):
         # Access the identity of the current user with get_jwt_identity
-        current_user_id = get_jwt_identity()
-        logging.debug(current_user_id)
+        #current_user_id = get_jwt_identity()
+        #logging.debug(current_user_id)
 
         # Get user by username
-        user = security_manager.get_user_by_id(current_user_id)#find_user(username=current_user)
-        print(vars(user))
+        #user = security_manager.get_user_by_id(current_user_id)#find_user(username=current_user)
+        #print(vars(user))
+
+        user = get_current_user();
 
         # Check all_datasource_access access
         has_all_datasource_access = security_manager._has_view_access(user, 'all_datasource_access', 'all_datasource_access')
@@ -125,6 +127,8 @@ class Api(BaseSupersetView):
     @expose('/v1/custom/test', methods=['GET'])
     @jwt_required
     def test(self):
+        user = get_current_user();
+        logging.debug(user)
         return jsonify(result='ok')
 
 appbuilder.add_view_no_menu(Api)

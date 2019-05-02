@@ -1,5 +1,5 @@
 from flask import jsonify
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, utils
 import logging
 import requests
 
