@@ -32,6 +32,8 @@ from dateutil import tz
 from flask_appbuilder.security.manager import AUTH_DB
 
 from superset.stats_logger import DummyStatsLogger
+from superset.exentriq import CustomSecurityManager
+
 
 # Realtime stats logger, a StatsD implementation exists
 STATS_LOGGER = DummyStatsLogger()
@@ -68,7 +70,7 @@ SUPERSET_WEBSERVER_TIMEOUT = 60
 
 SUPERSET_DASHBOARD_POSITION_DATA_LIMIT = 65535
 EMAIL_NOTIFICATIONS = False
-CUSTOM_SECURITY_MANAGER = None
+#CUSTOM_SECURITY_MANAGER = CustomSecurityManager
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 # ---------------------------------------------------------
 
@@ -93,10 +95,10 @@ SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(DATA_DIR, 'superset.db')
 QUERY_SEARCH_LIMIT = 1000
 
 # Flask-WTF flag for CSRF
-WTF_CSRF_ENABLED = True
+WTF_CSRF_ENABLED = False
 
 # Add endpoints that need to be exempt from CSRF protection
-WTF_CSRF_EXEMPT_LIST = ['superset.views.core.log', 'superset.views.api.login']
+WTF_CSRF_EXEMPT_LIST = ['superset.views.core.log', 'superset.views.api.login', 'superset.views.api.dashboards']
 
 # Whether to run the web server in debug mode or not
 DEBUG = os.environ.get('FLASK_ENV') == 'development'

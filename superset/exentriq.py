@@ -48,7 +48,7 @@ def exentriqLoginByToken(token, sm, sso_url):
         sm.add_user(p_username, first_name, last_name, email, role)
 
     # Identity can be any data that is json serializable
-    access_token = create_access_token(identity=p_username)
+    access_token = create_access_token(identity=user.id)
     return {'result':True, 'access_token':access_token, 'username': p_username} # jsonify(result=True, access_token=access_token, username=p_username), 200
 
 class CustomAuthDBView(AuthDBView):

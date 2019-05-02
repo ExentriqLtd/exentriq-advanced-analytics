@@ -95,13 +95,13 @@ class Api(BaseSupersetView):
 
     @expose('/v1/custom/dashboards', methods=['GET'])
     @jwt_required
-    def protected2(self):
+    def dashboards(self):
         # Access the identity of the current user with get_jwt_identity
-        current_user = get_jwt_identity()
-        logging.debug(current_user)
+        current_user_id = get_jwt_identity()
+        logging.debug(current_user_id)
 
         # Get user by username
-        user = security_manager.find_user(username=current_user)
+        user = security_manager.get_user_by_id(current_user_id)#find_user(username=current_user)
         print(vars(user))
 
         # Check all_datasource_access access
@@ -114,12 +114,17 @@ class Api(BaseSupersetView):
         if has_all_datasource_access == True:
             query = db.session.query(Dash)
         else:
-            query = db.session.query(Dash).join(Dash.owners).filter(User.username == current_user)
+            query = db.session.query(Dash).join(Dash.owners).filter(User.username == user.username)
 
         dashboards = []
         db_dashboards = query.all()
         for db_dashboard in db_dashboards:
             dashboards.append({'title':db_dashboard.dashboard_title, 'url':db_dashboard.url})
         return jsonify(dashboards)
+
+    @expose('/v1/custom/test', methods=['GET'])
+    @jwt_required
+    def test(self):
+        return jsonify(result='ok')
 
 appbuilder.add_view_no_menu(Api)
