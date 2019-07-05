@@ -121,7 +121,7 @@ class Api(BaseSupersetView):
         dashboards = []
         db_dashboards = query.all()
         for db_dashboard in db_dashboards:
-            dashboards.append({'title':db_dashboard.dashboard_title, 'url':db_dashboard.url})
+            dashboards.append({'title':db_dashboard.dashboard_title, 'url':db_dashboard.url, 'id':db_dashboard.id})
         return jsonify(dashboards)
 
     @expose('/v1/custom/test', methods=['GET'])
