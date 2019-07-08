@@ -62,6 +62,7 @@ class CustomAuthDBView(AuthDBView):
             redirect_url = request.args.get('redirect')
 
         if request.args.get('token') is not None:
+            logging.debug(request.args.get('token'))
             sso_url = self.appbuilder.app.config['EXENRIQ_SSO_URL']
             login_result = exentriqLoginByToken(request.args.get('token'), self.appbuilder.sm, sso_url)
             if login_result['result'] == True:
