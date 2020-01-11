@@ -242,7 +242,7 @@ CACHE_CONFIG = {'CACHE_TYPE': 'null'}
 TABLE_NAMES_CACHE_CONFIG = {'CACHE_TYPE': 'null'}
 
 # CORS Options
-ENABLE_CORS = False
+ENABLE_CORS = True
 CORS_OPTIONS = {}
 
 # Chrome allows up to 6 open connections per domain at a time. When there are more
@@ -411,10 +411,10 @@ CELERY_CONFIG = None
 # static http headers to be served by your Superset server.
 # This header prevents iFrames from other domains and
 # "clickjacking" as a result
-HTTP_HEADERS = {'X-Frame-Options': 'SAMEORIGIN'}
+# HTTP_HEADERS = {'X-Frame-Options': 'SAMEORIGIN'}
 # If you need to allow iframes from other domains (and are
 # aware of the risks), you can disable this header:
-# HTTP_HEADERS = {}
+HTTP_HEADERS = {}
 
 # The db id here results in selecting this one as a default in SQL Lab
 DEFAULT_DB_ID = None
@@ -610,7 +610,7 @@ DEFAULT_RELATIVE_END_TIME = 'today'
 # localtime (in the tz where the superset webserver is running)
 IS_EPOCH_S_TRULY_UTC = False
 
-EXENRIQ_SSO_URL = 'http://www.exentriq.com/JSON-RPC'
+EXENRIQ_SSO_URL = 'https://www.exentriq.com/JSON-RPC'
 
 try:
     if CONFIG_PATH_ENV_VAR in os.environ:
