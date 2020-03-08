@@ -68,7 +68,7 @@ class CustomAuthDBView(AuthDBView):
                 user = self.appbuilder.sm.find_user(username=login_result['username'])
             login_user(user, remember=False)
             return redirect(redirect_url)
-        elif g.user is not None and g.user.is_authenticated():
+        elif g.user is not None and g.user.is_authenticated:
             return redirect(redirect_url)
         else:
             flash('Unable to auto login', 'warning')

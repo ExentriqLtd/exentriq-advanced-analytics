@@ -31,7 +31,7 @@ RUN apt-get update && apt-get install -y build-essential curl default-libmysqlcl
 RUN apt-get update && apt-get install -y libsasl2-dev libsasl2-modules-gssapi-mit libssl1.0
 RUN apt-get clean
 RUN rm -r /var/lib/apt/lists/*
-    
+
 WORKDIR /home/superset
 
 RUN git clone https://github.com/ExentriqLtd/exentriq-advanced-analytics
@@ -48,6 +48,8 @@ RUN cd superset/assets && npm ci && npm run build && rm -rf node_modules
 
 COPY config/exentriq.py superset/exentriq.py
 COPY config/config.py superset/config.py
+COPY config/basic.html superset/templates/superset/basic.html
+COPY config/init.html /usr/local/lib/python3.6/site-packages/flask_appbuilder/templates/appbuilder/init.html
 
 RUN pip install .
 
