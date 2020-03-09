@@ -72,7 +72,7 @@ class CustomAuthDBView(AuthDBView):
             return redirect(redirect_url)
         else:
             flash('Unable to auto login', 'warning')
-            return super(CustomAuthDBView,self).login()
+        return super(CustomAuthDBView,self).login()
 
 class CustomSecurityManager(SupersetSecurityManager):
     authdbview = CustomAuthDBView
