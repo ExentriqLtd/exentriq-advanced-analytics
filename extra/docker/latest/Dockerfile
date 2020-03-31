@@ -50,6 +50,7 @@ COPY config/exentriq.py superset/exentriq.py
 COPY config/config.py superset/config.py
 COPY config/basic.html superset/templates/superset/basic.html
 COPY config/init.html /usr/local/lib/python3.6/site-packages/flask_appbuilder/templates/appbuilder/init.html
+COPY config/login_manager.fix /usr/local/lib/python3.6/site-packages/flask_login/login_manager.py
 
 RUN pip install .
 
