@@ -612,6 +612,9 @@ IS_EPOCH_S_TRULY_UTC = False
 
 EXENRIQ_SSO_URL = 'https://www.exentriq.com/JSON-RPC'
 
+SESSION_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SECURE = True
+
 try:
     if CONFIG_PATH_ENV_VAR in os.environ:
         # Explicitly import config module that is not in pythonpath; useful
